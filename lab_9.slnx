@@ -4,4 +4,5 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="lab_9/lab_9.vcxproj" Id="f4205de9-5b87-408f-a4ce-60e76ea8e329" />
+  <Project Path="console_app/console_app.vcxproj" Id="a1b2c3d4-e5f6-7890-abcd-ef1234567890" />
 </Solution>

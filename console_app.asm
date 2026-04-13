@@ -2,34 +2,35 @@
 .model flat, stdcall
 option casemap:none
 
-include \masm32\include\windows.inc
-include \masm32\include\kernel32.inc
-includelib \masm32\lib\kernel32.lib
+; --- WinAPI declarations (without MASM32) ---
+STD_OUTPUT_HANDLE   EQU -11
+NULL                EQU 0
+
+ExitProcess  PROTO STDCALL :DWORD
+GetStdHandle PROTO STDCALL :DWORD
+WriteFile    PROTO STDCALL :DWORD, :DWORD, :DWORD, :DWORD, :DWORD
+
+includelib kernel32.lib
 
 .data
-    ; ПІБ та група, які будуть виведені в канал
-    msg db "Petrenko Petro Petrovich, Group IO-99", 0
-    msgLen equ $ - msg
+    msg     db "Tymchuck Petro Oleksandrovych, Group SE-22", 13, 10, 0
+    msgLen  equ ($ - msg - 1)
 
 .data?
-    hStdOut dd ?
+    hStdOut     dd ?
     bytesWritten dd ?
 
 .code
 start:
-    ; Отримуємо дескриптор стандартного виводу (який буде перенаправленим каналом)
     invoke GetStdHandle, STD_OUTPUT_HANDLE
     mov hStdOut, eax
 
-    ; Перевірка на помилку (INVALID_HANDLE_VALUE = -1)
-    .if eax == INVALID_HANDLE_VALUE
-        invoke ExitProcess, 1
-    .endif
+    cmp eax, -1
+    je  done
 
-    ; Виводимо текст у канал
-    invoke WriteFile, hStdOut, addr msg, msgLen, addr bytesWritten, NULL
+    invoke WriteFile, hStdOut, OFFSET msg, msgLen, OFFSET bytesWritten, NULL
 
-    ; Завершуємо процес
+done:
     invoke ExitProcess, 0
 
 end start
