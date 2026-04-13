@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
         while (ReadConsoleInputA(hIn, &ir, 1, &read) && read > 0) {
             if (ir.EventType == KEY_EVENT && ir.Event.KeyEvent.bKeyDown) {
                 choice = ir.Event.KeyEvent.uChar.AsciiChar;
-                ConsolePrint(&choice); // Echo
+                ConsolePrint(&choice);
                 ConsolePrint("\n");
                 break;
             }
